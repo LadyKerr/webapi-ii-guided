@@ -140,7 +140,15 @@ server.get('/api/hubs/:id/messages', async (req, res) => {
 
 // add an endpoint for adding new message to a hub
 server.post('/api/hubs/:id/messages', async (req, res) => {
-
+  const messageInfo = { ...req.body, hub_id: req.params.id };
+  try {
+    const message = await Hubs.addMessage(messageInfo);
+    res.status(201).json(message);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error adding the message',
+    });
+  }
 });
 
 server.listen(4000, () => {
