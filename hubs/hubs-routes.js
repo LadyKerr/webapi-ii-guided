@@ -2,19 +2,7 @@ const express = require('express');
 const Hubs = require('./hubs-model');
 const route = express.Router();
 
-route.get("/:name", (req, res) => {
-  const { name } = req.params;
-  const { job } = req.query;
-  const { age } = req.body;
-  if (!name || !age || !job) {
-    res.status(400).json({ error: "You must provide the name, age and job" });
-  } else {
-    const message = `${name} is ${age} and he is a ${job}`;
-    res.json(message);
-  }
-});
-
-route.get('/api/hubs', async (req, res) => {
+route.get('/', async (req, res) => {
   try {
     const hubs = await Hubs.find(req.query);
     res.status(200).json(hubs);
@@ -27,7 +15,7 @@ route.get('/api/hubs', async (req, res) => {
   }
 });
 
-route.get('/api/hubs/:id', async (req, res) => {
+route.get('/:id', async (req, res) => {
   try {
     const hub = await Hubs.findById(req.params.id);
 
@@ -45,7 +33,7 @@ route.get('/api/hubs/:id', async (req, res) => {
   }
 });
 
-route.post('/api/hubs', async (req, res) => {
+route.post('/', async (req, res) => {
   try {
     const hub = await Hubs.add(req.body);
     res.status(201).json(hub);
@@ -58,7 +46,7 @@ route.post('/api/hubs', async (req, res) => {
   }
 });
 
-route.delete('/api/hubs/:id', async (req, res) => {
+route.delete('/:id', async (req, res) => {
   try {
     const count = await Hubs.remove(req.params.id);
     if (count > 0) {
@@ -75,7 +63,7 @@ route.delete('/api/hubs/:id', async (req, res) => {
   }
 });
 
-route.put('/api/hubs/:id', async (req, res) => {
+route.put('/:id', async (req, res) => {
   try {
     const hub = await Hubs.update(req.params.id, req.body);
     if (hub) {
@@ -93,7 +81,7 @@ route.put('/api/hubs/:id', async (req, res) => {
 });
 
 // add an endpoint that returns all the messages for a hub
-route.get('/api/hubs/:id/messages', async (req, res) => {
+route.get('/:id/messages', async (req, res) => {
   try {
     const { id } = req.params;
     const hub = await Hubs.findById(id)
@@ -110,7 +98,7 @@ route.get('/api/hubs/:id/messages', async (req, res) => {
 });
 
 // add an endpoint for adding new message to a hub
-route.post('/api/hubs/:id/messages', async (req, res) => {
+route.post('/:id/messages', async (req, res) => {
   const messageInfo = { ...req.body, hub_id: req.params.id };
   try {
     const message = await Hubs.addMessage(messageInfo);

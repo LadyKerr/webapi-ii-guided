@@ -5,7 +5,7 @@ const server = express();
 
 server.use(express.json());
 
-server.use(hubsRoutes);
+server.use('/api/hubs', hubsRoutes);
 
 server.get('/', (req, res) => {
   res.send(`
