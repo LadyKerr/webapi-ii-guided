@@ -122,9 +122,26 @@ server.put('/api/hubs/:id', async (req, res) => {
 });
 
 // add an endpoint that returns all the messages for a hub
-// we should use findHubMessages inside hubs-model
+server.get('/api/hubs/:id/messages', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hub = await Hubs.findById(id)
+    if (hub) {
+      const hubs = await Hubs.findHubMessages(id)
+      res.status(200).json(hubs)
+    } else {
+      res.status(404).json({ errorMessage: 'Can\'t find that id!!' })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Can't find the message for that hub" })
+  }
+});
 
 // add an endpoint for adding new message to a hub
+server.post('/api/hubs/:id/messages', async (req, res) => {
+
+});
 
 server.listen(4000, () => {
   console.log('\n*** Server Running on http://localhost:4000 ***\n');
