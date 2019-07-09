@@ -13,6 +13,36 @@ server.get('/', (req, res) => {
   `);
 });
 
+// server.get('/api/:name', (req, res) => {
+//   const { name } = req.params;
+//   const { job } = req.query;
+//   const { age } = req.body;
+//   res.status(200).json({ success: true, message: `${name} is ${age} and works as a ${job}`})
+// });
+
+// server.get('/api/:name', (req, res) => {
+//   const { query, body, params } = req;
+
+//   if (!query.job || !body.age) {
+//     res.json('Age or job are missing');
+//   }
+//   else {
+//     res.json(`${params.name} is a ${query.job} and is ${body.age} years old`);
+//   }
+// });
+
+server.get("/:name", (req, res) => {
+  const { name } = req.params;
+  const { job } = req.query;
+  const { age } = req.body;
+  if (!name || !age || !job) {
+    res.status(400).json({ error: "You must provide the name, age and job" });
+  } else {
+    const message = `${name} is ${age} and he is a ${job}`;
+    res.json(message);
+  }
+});
+
 server.get('/api/hubs', async (req, res) => {
   try {
     const hubs = await Hubs.find(req.query);
